@@ -11,28 +11,31 @@ decision-making.
 
 ## Pipeline
 
-The pipeline has four stages:
+The pipeline has five stages:
 
-1. **Generate structured reports**
+0. **Define the anatomical rules**
+   - Define the anatomically plausible rules verified by the radiologist to generate synthetic structured reports. 
+
+2. **Generate structured reports**
    - `code_to_obtain_SR_data/synthetic_SR_dataset.ipynb`
    - Generates 100,000 fictitious structured reports.
    - Selects a reproducible, balanced subset of 1,000 reports.
    - Writes `balanced_synthetic_SR.jsonl`.
 
-2. **Diversify the structured reports**
+3. **Diversify the structured reports**
    - `code_to_obtain_SR_data/diversify_balanced_synthetic_SR.ipynb`
    - Introduces controlled missing values.
    - Removes unused structured fields.
    - Converts selected centimetre measurements to millimetres.
    - Writes the processed and modified JSONL datasets.
 
-3. **Generate free-text reports**
+4. **Generate free-text reports**
    - `gpt4_freetext_reports.py`
    - Reads `balanced_synthetic_SR_modified.jsonl`.
    - Uses `gpt-4.1-2025-04-14` with `prompts/gpt4_prompt.py`.
    - Writes `generated_datasets/synthetic_reports_gpt4.csv`.
 
-4. **Assess and correct report alignment**
+5. **Assess and correct report alignment**
    - `ds_assessment.py`
    - Uses `deepseek-reasoner` with `prompts/ds_prompts.py`.
    - Classifies each narrative as `Perfect`, `Minor issues`, or
@@ -71,8 +74,8 @@ The current CSV files contain 1,000 report pairs.
 
 | File | Purpose | Columns |
 | --- | --- | --- |
-| `synthetic_reports_gpt4.csv` | Initial generated narratives | `synthetic_structured_report`, `free_text_report` |
-| `ds_assessment_results.csv` | Alignment assessments and corrected narratives | `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
+| `synthetic_reports_gpt4.csv` | Initial generated narratives by gpt-4o model | `synthetic_structured_report`, `free_text_report` |
+| `ds_assessment_results.csv` | Alignment assessments and corrected narratives woth DeepSeek R1 model| `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
 | `updated_synthetic_dataset.csv` | Curated two-column dataset | `structured_report`, `free_text_report` |
 
 The structured report is stored as a JSON object serialized inside a CSV
@@ -106,8 +109,6 @@ Create a local `.env` file:
 OPENAI_API=your_openai_api_key
 DS_API=your_deepseek_api_key
 ```
-
-Do not commit API keys.
 
 CSV and JSONL artifacts are tracked with Git LFS:
 
@@ -166,9 +167,8 @@ Recommended validation after modifying the dataset:
 
 ## Limitations
 
-- The reports are generated from rules and language models rather than
-  patient imaging.
+- The reports are generated from pre-define rules verified by the radiologist. 5 translated anonymized real reports are used for a few-shot prompting 
 - Synthetic distributions do not represent disease prevalence.
-- Model-generated narratives can omit, alter, or invent findings.
+- Model-generated narratives can omit, alter, or invent findings. But from the studies we know, that "inverse inference", i.e from structured data to free text, is relatively easy and straightforward task for large language models 
 - Automated assessment is not a substitute for expert radiologist review.
 - Prompt, model, and dependency changes can affect reproducibility.
