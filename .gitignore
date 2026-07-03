@@ -56,3 +56,6 @@ Thumbs.db
 # Local secrets and environments
 .env
 .venv/
+
+# Microsoft Word temporary files
+~$*.docx

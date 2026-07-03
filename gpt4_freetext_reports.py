@@ -8,7 +8,7 @@ from prompts.gpt4_prompt import GPT_PROMPT
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv('OPENAI_API'))
-input_file = 'code_to_obtain_SR_data/jsonl_data_vscode/balanced_synthetic_SR_modified.jsonl'
+input_file = 'code_to_obtain_SR_data/jsonl_data/balanced_synthetic_SR_modified.jsonl'
 csv_output_file = "generated_datasets/synthetic_reports_gpt4.csv"
 
 synthetic_reports_count = 0

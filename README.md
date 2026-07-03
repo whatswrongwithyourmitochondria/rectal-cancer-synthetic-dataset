@@ -1,4 +1,4 @@
-# Synthetic dataset of structured and corresponding free text pairs of primary-staging rectal cancer mri reports 
+# Synthetic Rectal MRI Dataset
 
 This repository generates a fully synthetic dataset of structured rectal MRI
 staging reports and corresponding free-text radiology narratives. It is
@@ -11,31 +11,28 @@ decision-making.
 
 ## Pipeline
 
-The pipeline has five stages:
+The pipeline has four stages:
 
-0. **Define the anatomical rules**
-   - Define the anatomically plausible rules verified by the radiologist to generate synthetic structured reports. 
-
-2. **Generate structured reports**
+1. **Generate structured reports**
    - `code_to_obtain_SR_data/synthetic_SR_dataset.ipynb`
    - Generates 100,000 fictitious structured reports.
    - Selects a reproducible, balanced subset of 1,000 reports.
    - Writes `balanced_synthetic_SR.jsonl`.
 
-3. **Diversify the structured reports**
+2. **Diversify the structured reports**
    - `code_to_obtain_SR_data/diversify_balanced_synthetic_SR.ipynb`
    - Introduces controlled missing values.
    - Removes unused structured fields.
    - Converts selected centimetre measurements to millimetres.
    - Writes the processed and modified JSONL datasets.
 
-4. **Generate free-text reports**
+3. **Generate free-text reports**
    - `gpt4_freetext_reports.py`
    - Reads `balanced_synthetic_SR_modified.jsonl`.
    - Uses `gpt-4.1-2025-04-14` with `prompts/gpt4_prompt.py`.
    - Writes `generated_datasets/synthetic_reports_gpt4.csv`.
 
-5. **Assess and correct report alignment**
+4. **Assess and correct report alignment**
    - `ds_assessment.py`
    - Uses `deepseek-reasoner` with `prompts/ds_prompts.py`.
    - Classifies each narrative as `Perfect`, `Minor issues`, or
@@ -51,7 +48,7 @@ synthetic_dataset/
 ├── code_to_obtain_SR_data/
 │   ├── synthetic_SR_dataset.ipynb
 │   ├── diversify_balanced_synthetic_SR.ipynb
-│   └── jsonl_data_vscode/
+│   └── jsonl_data/
 │       ├── synthetic_SR_100000.jsonl
 │       ├── balanced_synthetic_SR.jsonl
 │       ├── balanced_synthetic_SR_processed.jsonl
@@ -60,12 +57,14 @@ synthetic_dataset/
 │   ├── synthetic_reports_gpt4.csv
 │   ├── ds_assessment_results.csv
 │   └── updated_synthetic_dataset.csv
+├── radiologist_assessment/
+│   ├── anatomical_rules_assessment.docx
+│   └── 20_synthetic_pairs_checked.docx
 ├── prompts/
 │   ├── gpt4_prompt.py
 │   └── ds_prompts.py
 ├── gpt4_freetext_reports.py
-├── ds_assessment.py
-└── test.py
+└── ds_assessment.py
 ```
 
 ## Dataset files
@@ -74,8 +73,8 @@ The current CSV files contain 1,000 report pairs.
 
 | File | Purpose | Columns |
 | --- | --- | --- |
-| `synthetic_reports_gpt4.csv` | Initial generated narratives by gpt-4o model | `synthetic_structured_report`, `free_text_report` |
-| `ds_assessment_results.csv` | Alignment assessments and corrected narratives woth DeepSeek R1 model| `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
+| `synthetic_reports_gpt4.csv` | Initial generated narratives | `synthetic_structured_report`, `free_text_report` |
+| `ds_assessment_results.csv` | Alignment assessments and corrected narratives | `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
 | `updated_synthetic_dataset.csv` | Curated two-column dataset | `structured_report`, `free_text_report` |
 
 The structured report is stored as a JSON object serialized inside a CSV
@@ -85,6 +84,31 @@ field. Its top-level sections are:
 - `mesorectal_fascia_involement`
 - `lymph_nodes_and_tumor_deposits`
 - `emvi`
+
+The key `mesorectal_fascia_involement` retains its original spelling for
+dataset compatibility.
+
+## Radiologist assessment
+
+The `radiologist_assessment/` directory contains an expert qualitative review
+contributed by Ana Miguel Simões, Radiology Resident at ULS Trás-os-Montes e
+Alto Douro:
+
+- `anatomical_rules_assessment.docx` reviews the structured-report template
+  and generation rules. It discusses tumour location, T staging, the anterior
+  peritoneal reflection, adjacent-organ and sphincter involvement, MRF
+  involvement, nodal staging, tumour deposits, EMVI, and anatomical
+  clock-face rules. It also proposes an updated staging template and comments
+  on example reports.
+- `20_synthetic_pairs_checked.docx` reviews 20 structured-report/free-text
+  pairs for direct correspondence, narrative quality, and clinical
+  plausibility. It records case-specific discrepancies and recommendations
+  about terminology, anatomy, staging, and report style.
+
+These documents provide targeted expert feedback on the generation rules and
+a sample of report pairs. They do not constitute clinical validation of all
+1,000 records, and not every recommendation in the documents is necessarily
+implemented in the current dataset.
 
 ## Setup
 
@@ -106,6 +130,8 @@ Create a local `.env` file:
 OPENAI_API=your_openai_api_key
 DS_API=your_deepseek_api_key
 ```
+
+Do not commit API keys.
 
 CSV and JSONL artifacts are tracked with Git LFS:
 
@@ -164,8 +190,11 @@ Recommended validation after modifying the dataset:
 
 ## Limitations
 
-- The reports are generated from pre-define rules verified by the radiologist. 5 translated anonymized real reports are used for a few-shot prompting 
+- The reports are generated from rules and language models rather than
+  patient imaging.
+- The radiologist review covers the generation rules and a 20-report sample,
+  not the complete dataset.
 - Synthetic distributions do not represent disease prevalence.
-- Model-generated narratives can omit, alter, or invent findings. But from the studies we know, that "inverse inference", i.e from structured data to free text, is relatively easy and straightforward task for large language models 
+- Model-generated narratives can omit, alter, or invent findings.
 - Automated assessment is not a substitute for expert radiologist review.
 - Prompt, model, and dependency changes can affect reproducibility.
