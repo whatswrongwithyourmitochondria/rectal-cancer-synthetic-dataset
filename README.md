@@ -1,4 +1,4 @@
-# Synthetic Rectal MRI Dataset
+# Synthetic dataset of structured and corresponding free text primary-staging rectal cancer MRI reports 
 
 This repository generates a fully synthetic dataset of structured rectal MRI
 staging reports and corresponding free-text radiology narratives. It is
@@ -74,8 +74,8 @@ The current CSV files contain 1,000 report pairs.
 
 | File | Purpose | Columns |
 | --- | --- | --- |
-| `synthetic_reports_gpt4.csv` | Initial generated narratives | `synthetic_structured_report`, `free_text_report` |
-| `ds_assessment_results.csv` | Alignment assessments and corrected narratives | `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
+| `synthetic_reports_gpt4.csv` | Initial generated narratives by gpt-4o model| `synthetic_structured_report`, `free_text_report` |
+| `ds_assessment_results.csv` | Alignment assessments and corrected narratives by deepseek r1 model| `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
 | `updated_synthetic_dataset.csv` | Curated two-column dataset | `structured_report`, `free_text_report` |
 
 The structured report is stored as a JSON object serialized inside a CSV
@@ -85,9 +85,6 @@ field. Its top-level sections are:
 - `mesorectal_fascia_involement`
 - `lymph_nodes_and_tumor_deposits`
 - `emvi`
-
-The key `mesorectal_fascia_involement` retains its original spelling for
-dataset compatibility.
 
 ## Radiologist assessment
 
@@ -104,7 +101,7 @@ Alto Douro:
 - `20_synthetic_pairs_checked.docx` reviews 20 structured-report/free-text
   pairs for direct correspondence, narrative quality, and clinical
   plausibility. It records case-specific discrepancies and recommendations
-  about terminology, anatomy, staging, and report style.
+  about terminology, anatomy, staging, and report style. That assessment is then used to correct the pipeline
 
 These documents provide targeted expert feedback on the generation rules and
 a sample of report pairs. They do not constitute clinical validation of all
@@ -191,11 +188,10 @@ Recommended validation after modifying the dataset:
 
 ## Limitations
 
-- The reports are generated from rules and language models rather than
-  patient imaging.
+- The reports are generated from the anatomically plausible rules in Python and 5 anonymized real rectal cancer mri reports were used for few-shot prompting. 
 - The radiologist review covers the generation rules and a 20-report sample,
   not the complete dataset.
-- Synthetic distributions do not represent disease prevalence.
-- Model-generated narratives can omit, alter, or invent findings.
+- (!) Synthetic distributions do not represent disease prevalence.
+- Model-generated narratives can omit, alter, or invent findings. But from the studies and experiments we know, that "inverse inference" is a relatively easy and starightforward task for large language models. 
 - Automated assessment is not a substitute for expert radiologist review.
 - Prompt, model, and dependency changes can affect reproducibility.
