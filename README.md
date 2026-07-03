@@ -1,4 +1,4 @@
-# Synthetic Rectal MRI Dataset
+# Synthetic dataset of structured and corresponding free text pairs of primary-staging rectal cancer mri reports 
 
 This repository generates a fully synthetic dataset of structured rectal MRI
 staging reports and corresponding free-text radiology narratives. It is
@@ -85,9 +85,6 @@ field. Its top-level sections are:
 - `mesorectal_fascia_involement`
 - `lymph_nodes_and_tumor_deposits`
 - `emvi`
-
-The key `mesorectal_fascia_involement` retains its original spelling for
-dataset compatibility.
 
 ## Setup
 
