@@ -1,13 +1,11 @@
-# Synthetic dataset of structured and corresponding free text primary-staging rectal cancer MRI reports 
+# Synthetic Rectal Cancer MRI Reports Dataset and Generation Framework
 
-This repository generates a fully synthetic dataset of structured rectal MRI
-staging reports and corresponding free-text radiology narratives. It is
-intended for research on report generation, information extraction, and
-structured-to-free-text alignment without exposing protected health
-information.
+This repository provides a fully synthetic dataset of paired structured and free-text primary-staging rectal cancer MRI reports, 
+together with the reproducible framework used to generate, diversify, narrativise, audit, and evaluate the data.
 
-The generated cases are synthetic and must not be used for clinical
-decision-making.
+Each case contains a structured report and a corresponding free-text radiology narrative. The dataset is intended for research in radiology NLP, report generation, information extraction, schema-constrained extraction, and structured-to-free-text alignment without exposing patient data.
+
+All cases are synthetic and are not intended for clinical decision-making.
 
 ## Citation
 
