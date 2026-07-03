@@ -74,7 +74,7 @@ The current CSV files contain 1,000 report pairs.
 
 | File | Purpose | Columns |
 | --- | --- | --- |
-| `synthetic_reports_gpt4.csv` | Initial generated narratives by gpt-4o model| `synthetic_structured_report`, `free_text_report` |
+| `synthetic_reports_gpt4.csv` | Initial generated narratives by gpt-4.1 model| `synthetic_structured_report`, `free_text_report` |
 | `ds_assessment_results.csv` | Alignment assessments and corrected narratives by deepseek r1 model| `synthetic_structured_report`, `free_text_report`, `ds_assessment`, `ds_corrected` |
 | `updated_synthetic_dataset.csv` | Curated two-column dataset | `structured_report`, `free_text_report` |
 
