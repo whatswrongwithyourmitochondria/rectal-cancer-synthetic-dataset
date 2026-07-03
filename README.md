@@ -63,6 +63,7 @@ synthetic_dataset/
 ├── prompts/
 │   ├── gpt4_prompt.py
 │   └── ds_prompts.py
+├── requirements.txt
 ├── gpt4_freetext_reports.py
 └── ds_assessment.py
 ```
@@ -121,7 +122,7 @@ python -m venv .venv
 Activate the environment, then install the required packages:
 
 ```bash
-pip install "pydantic>=2" openai python-dotenv jupyter
+python -m pip install -r requirements.txt
 ```
 
 Create a local `.env` file:
