@@ -1,5 +1,11 @@
 # Runtime and notebook dependencies
 jupyter>=1.0
 openai>=1.0
+pandas>=2.0
 pydantic>=2.0
 python-dotenv>=1.0
+
+# Local benchmark dependencies
+outlines>=1.0
+torch>=2.4
+transformers>=4.43
