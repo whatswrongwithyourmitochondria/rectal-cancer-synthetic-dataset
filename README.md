@@ -9,6 +9,13 @@ information.
 The generated cases are synthetic and must not be used for clinical
 decision-making.
 
+## Citation
+
+Batrakova, M., Santinha, J., & Simões, A. M. (2026). *Synthetic Dataset of
+Structured and Free-Text Primary Staging Rectal Cancer MRI Reports* [Data
+set]. Zenodo.
+[https://doi.org/10.5281/zenodo.21173484](https://doi.org/10.5281/zenodo.21173484)
+
 ## Pipeline
 
 The pipeline has four stages:
@@ -60,6 +67,10 @@ synthetic_dataset/
 ├── radiologist_assessment/
 │   ├── anatomical_rules_assessment.docx
 │   └── 20_synthetic_pairs_checked.docx
+├── llm_benchmark_example/
+│   ├── llama8b_outlines.ipynb
+│   ├── prompt.py
+│   └── pydantic_template.py
 ├── prompts/
 │   ├── gpt4_prompt.py
 │   └── ds_prompts.py
@@ -85,6 +96,24 @@ field. Its top-level sections are:
 - `mesorectal_fascia_involement`
 - `lymph_nodes_and_tumor_deposits`
 - `emvi`
+
+## Zero-shot structured-output benchmark
+
+The `llm_benchmark_example/` directory contains a zero-shot benchmark for
+extracting schema-constrained JSON from the synthetic free-text reports with
+Llama 3.1 8B Instruct and Outlines:
+
+- `llama8b_outlines.ipynb` loads
+  `generated_datasets/updated_synthetic_dataset.csv`, runs zero-shot
+  extraction, records inference time, and writes
+  `generated_datasets/llm_benchmark_outputs/llama3_1_8b_zero_shot.csv`;
+- `prompt.py` defines the zero-shot extraction prompt;
+- `pydantic_template.py` defines the 25-field structured-output schema.
+
+The original inference was run on premises in a Docker container using an
+NVIDIA RTX A6000 GPU. A similar experiment can be conducted in Google Colab
+with a GPU runtime. In the notebook, update `MODEL_NAME_OR_PATH` and uncomment
+the CUDA diagnostics and model-loading cell before running the benchmark.
 
 ## Radiologist assessment
 
