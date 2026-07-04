@@ -88,12 +88,7 @@ The current CSV files contain 1,000 report pairs.
 | `updated_synthetic_dataset.csv` | Curated two-column dataset | `structured_report`, `free_text_report` |
 
 The structured report is stored as a JSON object serialized inside a CSV
-field. Its top-level sections are:
-
-- `local_tumor_status`
-- `mesorectal_fascia_involement`
-- `lymph_nodes_and_tumor_deposits`
-- `emvi`
+field. For the complete structured-report schema, see [SCHEMA.md](SCHEMA.md).
 
 ## Zero-shot structured-output benchmark
 
